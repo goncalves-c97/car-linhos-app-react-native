@@ -5,6 +5,7 @@ import Products from './Views/Products/index';
 import MainMenu from './Views/MainMenu/index';
 import Login from './Views/Login/index';
 import Register from './Views/Register/index';
+import AddEditProduct from './Views/AddEditProduct/index';
 
 /*
 expo install react-navigation  
@@ -17,7 +18,8 @@ const Routes = createAppContainer(
     Products,
     MainMenu,
     Login,
-    Register
+    Register,
+    AddEditProduct
   })
 );
 

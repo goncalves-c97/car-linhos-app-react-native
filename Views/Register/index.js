@@ -1,6 +1,5 @@
 import { react, useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput, BackHandler, Alert } from 'react-native';
-import { RadioButton } from 'react-native-paper'
 import { Picker } from '@react-native-picker/picker';
 
 import styles from './styles';
@@ -107,22 +106,22 @@ export default function Home({ navigation }) {
                 <Picker.Item label="Comprador" value="Comprador" />
             </Picker>
             <Text style={styles.label}>Nome</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setName(text)}>
+            <TextInput style={styles.input} keyboardType='default' onChangeText={(text) => setName(text)}>
 
             </TextInput>
 
             <Text style={styles.label}>Email</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setEmail(text)}>
+            <TextInput style={styles.input} keyboardType='email-address' onChangeText={(text) => setEmail(text)}>
 
             </TextInput>
 
             <Text style={styles.label}>Senha</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setPassword(text)} secureTextEntry={true}>
+            <TextInput style={styles.input} keyboardType='default' onChangeText={(text) => setPassword(text)} secureTextEntry={true}>
 
             </TextInput>
 
             <Text style={styles.label}>Confirmar senha</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setConfirmPassword(text)} secureTextEntry={true}>
+            <TextInput style={styles.input} keyboardType='default' onChangeText={(text) => setConfirmPassword(text)} secureTextEntry={true}>
 
             </TextInput>
 

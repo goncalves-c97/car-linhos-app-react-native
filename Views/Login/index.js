@@ -56,11 +56,11 @@ export default function Home({ navigation }) {
         <View style={styles.container}>
             <Image style={styles.appLogo} source={carLinhosLogo}></Image>
             <Text style={styles.label}>Email</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setEmail(text)}>
+            <TextInput style={styles.input} keyboardType='email-address' onChangeText={(text) => setEmail(text)}>
 
             </TextInput>
             <Text style={styles.label}>Senha</Text>
-            <TextInput style={styles.input} onChangeText={(text) => setPassword(text)} secureTextEntry={true}>
+            <TextInput style={styles.input} keyboardType='default' onChangeText={(text) => setPassword(text)} secureTextEntry={true}>
 
             </TextInput>
 

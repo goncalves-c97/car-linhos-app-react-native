@@ -6,7 +6,7 @@ import carLinhosLogo from '../../assets/car-linhos-logo.png';
 import {
     createTables,
     checkMocks
-  } from '../../services/dbservice';
+} from '../../services/dbservice';
 
 export default function Home({ navigation }) {
 
@@ -18,9 +18,15 @@ export default function Home({ navigation }) {
             tablesCreated = await createTables();
             console.log("Tabelas OK: ", tablesCreated);
 
-            console.log("Verificando mocks...");
-            let mocksCreated = await checkMocks();
-            console.log("Mocks OK: ", mocksCreated);
+            let mockEnabled = false;
+
+            if (mockEnabled) {
+                console.log("Verificando mocks...");
+                let mocksCreated = await checkMocks();
+                console.log("Mocks OK: ", mocksCreated);
+            }
+            else
+                console.log("Mocks desabilitados");
         }
     }
 

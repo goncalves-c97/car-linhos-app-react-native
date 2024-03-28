@@ -315,6 +315,24 @@ export async function addProduct(product) {
     return await executeSqlQueryWithParams(query, params);
 }
 
+export async function updateProduct(product) {
+    let query = 'update tbproducts set name = ?, stock = ?, unit_price = ?, category_id = ? where id = ?';
+    let params = [ product.name, product.stock, product.unit_price, product.category_id, product.id ];
+
+    console.log(params);
+
+    return await executeSqlQueryWithParams(query, params);
+}
+
+export async function removeProduct(product_id) {
+    let query = 'delete from tbproducts where id=?';
+    let params = [ product_id ];
+
+    console.log(params);
+
+    return await executeSqlQueryWithParams(query, params);
+}
+
 export async function getProductsList() {
     let query = 'select * from tbproducts';
     let params = [];
@@ -335,7 +353,7 @@ export async function getProductsList() {
         }
     }
 
-    return productsList;
+    return productsList.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 // export function obtemTodosUsuarios() {

@@ -9,16 +9,27 @@ import {
 import styles from "./styles";
 
 import GenericProductImage from "../../assets/generic_product.png";
+
 import SpareParts from "../../assets/spare_parts.png";
 import Tools from "../../assets/tools.png";
 import CleanCare from "../../assets/clean_care.png";
 import TireWheels from "../../assets/tires_wheels.png";
 import Electronics from "../../assets/electronics.png";
+import Miscellanelous from "../../assets/miscellanelous.png"
+
+import Edit from "../../assets/edit.png";
+import Remove from "../../assets/remove.png";
+import AddCart from "../../assets/add_cart.png";
+import Cart from "../../assets/cart.png";
 
 export default function CardProduct({ user, product, edit, remove, addToCart }) {
     return (
         <View style={styles.cardHorizontalArea}>
             <View style={styles.imageArea}>
+                {
+                    product.category_id == 0 &&
+                    <Image source={GenericProductImage} style={styles.productImage}></Image>
+                }
                 {
                     product.category_id == 1 &&
                     <Image source={SpareParts} style={styles.productImage}></Image>
@@ -39,6 +50,10 @@ export default function CardProduct({ user, product, edit, remove, addToCart }) 
                     product.category_id == 5 &&
                     <Image source={Electronics} style={styles.productImage}></Image>
                 }
+                {
+                    product.category_id > 5 &&
+                    <Image source={Miscellanelous} style={styles.productImage}></Image>
+                }
             </View>
 
             <View
@@ -56,21 +71,12 @@ export default function CardProduct({ user, product, edit, remove, addToCart }) 
                     {
                         user.role == 'Vendedor' &&
                         <>
-                            <TouchableOpacity
-                                style={styles.botaoEditar}
-                                onPress={() => edit(product.id)}
-                            >
-                                <Text>Editar</Text>
+                            <TouchableOpacity onPress={() => edit(product.id)}>
+                                <Image style={styles.optionImage} source={Edit}></Image>
                             </TouchableOpacity>
 
-                            <Text> </Text>
-
-                            <TouchableOpacity
-                                style={styles.botaoApagar}
-                                onPress={() => remove(product.id)}
-                            >
-                                <Text>Apagar</Text>
-                                {/* <AntDesign name="delete" size={24} color="red" /> */}
+                            <TouchableOpacity onPress={() => remove(product.id)}>
+                                <Image style={styles.optionImage} source={Remove}></Image>
                             </TouchableOpacity>
                         </>
                     }
@@ -78,14 +84,8 @@ export default function CardProduct({ user, product, edit, remove, addToCart }) 
                     {
                         user.role != 'Vendedor' &&
                         <>
-                            <Text> </Text>
-
-                            <TouchableOpacity
-                                style={styles.botaoApagar}
-                                onPress={() => addToCart(product.id)}
-                            >
-                                <Text>Adicionar ao carrinho</Text>
-                                {/* <AntDesign name="delete" size={24} color="red" /> */}
+                            <TouchableOpacity onPress={() => addToCart(product.id)}>
+                                <Image style={styles.optionImage} source={AddCart}></Image>
                             </TouchableOpacity>
                         </>
                     }

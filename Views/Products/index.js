@@ -1,5 +1,5 @@
 import { react, useEffect, useState } from 'react';
-import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView } from 'react-native';
+import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import styles from './styles';
 
@@ -11,13 +11,18 @@ import {
 
 import CardProduct from '../../Components/CardProduct';
 
+import Cart from '../../assets/shopping_cart.png';
+
 export default function Home({ navigation }) {
 
     const user = navigation.getParam('user', null);
     const salesman = user.role == 'Vendedor';
+    const [productsInCart, setProductsInCart] = useState([]);
+
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filteredCategory, setFilteredCategory] = useState('0');
+    const [cartQuantity, setCartQuantity] = useState(0);
 
     // Esse useEffect é utilizado para sobrescrever o comportamento no botão nativo de voltar do Android
     useEffect(() => {
@@ -80,7 +85,7 @@ export default function Home({ navigation }) {
     }
 
     async function editProduct(product_id) {
-        navigation.navigate('AddEditProduct', {user: user, product_id: product_id});
+        navigation.navigate('AddEditProduct', { user: user, product_id: product_id });
     }
 
     async function eraseProduct(product_id) {
@@ -105,12 +110,28 @@ export default function Home({ navigation }) {
         ]);
     }
 
+    async function addToCart(product_id){
+        console.log(product_id);
+        let productSelected = products.filter(x => x.id == product_id);
+        console.log(productSelected);
+        setProductsInCart([...productsInCart, productSelected]);
+    }
 
+    useEffect(() => {
+        setCartQuantity(productsInCart.length);
+        console.log("Carrinho: ", productsInCart);
+    }, [productsInCart]);
 
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#1B0036" />
-            <Text style={styles.navigationBarText}>Lista de produtos</Text>
+            <View style={styles.horizontalView}>
+                <Text style={styles.navigationBarText}>Lista de produtos</Text>
+                <TouchableOpacity>
+                    <Image style={styles.icon} source={Cart}></Image>
+                </TouchableOpacity>
+                <Text style={styles.cartQuantity}>{cartQuantity}</Text>
+            </View>
             <Text style={styles.label}>Filtrar por categoria: </Text>
             <Picker
                 selectedValue={filteredCategory}
@@ -133,7 +154,7 @@ export default function Home({ navigation }) {
                                     user={user}
                                     edit={editProduct}
                                     remove={eraseProduct}
-                                    addToCart={inDevelopment}
+                                    addToCart={addToCart}
                                     key={index.toString()} />
                             ))}
                     </ScrollView>

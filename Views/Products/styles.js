@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
     paddingBottom: 10,
-    paddingLeft: 50
+    paddingLeft: 90
   },
   scrollViewView: {
     flex: 1,
@@ -74,6 +74,26 @@ const styles = StyleSheet.create({
   },
   label:{
     marginVertical: 10
+  },
+  horizontalView:{
+    flexDirection: 'row',
+    backgroundColor: '#1B0036'
+  },
+  icon:{
+    height: 40,
+    width: 40,
+    marginRight: 70
+  },
+  cartQuantity:{
+    position: 'absolute',
+    backgroundColor: 'red',
+    textAlign: 'right',
+    borderRadius: 5,
+    padding: 2,
+    color: '#FAFAF9',
+    fontWeight: 'bold',
+    marginLeft: 420,
+    marginTop: 18
   }
 })
 

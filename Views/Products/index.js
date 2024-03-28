@@ -1,23 +1,29 @@
 import { react, useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView } from 'react-native';
-import { useRoute } from '@react-navigation/native'
+import { Picker } from '@react-native-picker/picker';
 import styles from './styles';
 
 import {
-    getProductsList
+    getCategoriesList,
+    getProductsList,
+    removeProduct
 } from '../../services/dbservice'
+
 import CardProduct from '../../Components/CardProduct';
 
 export default function Home({ navigation }) {
-    
+
     const user = navigation.getParam('user', null);
     const salesman = user.role == 'Vendedor';
     const [products, setProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [filteredCategory, setFilteredCategory] = useState('0');
 
     // Esse useEffect é utilizado para sobrescrever o comportamento no botão nativo de voltar do Android
     useEffect(() => {
 
         loadProducts();
+        loadCategories();
         const backAction = () => {
             navigation.navigate('MainMenu', { user: user });
         };
@@ -34,27 +40,88 @@ export default function Home({ navigation }) {
         navigation.navigate('MainMenu', { user: user });
     }
 
-    function inDevelopment(){
+    function inDevelopment() {
         Alert.alert('Em desenvolvimento...');
     }
 
-    async function loadProducts() {
-    
+    async function filterProducts(productCategory) {
+        setFilteredCategory(productCategory);
         let products = await getProductsList();
-    
+        let productCategoryInteger = parseInt(productCategory);
+
+        if (productCategoryInteger == 0)
+            setProducts(products);
+        else
+            setProducts(products.filter(x => x.category_id == productCategoryInteger));
+    }
+
+    async function loadProducts() {
+
+        let products = await getProductsList();
+
         if (products.length > 0) {
-          setProducts(products);
+            setProducts(products);
         } else {
-          Alert.alert("Não há produtos cadastrados!");
-          setProducts([]);
+            Alert.alert("Não há produtos cadastrados!");
+            setProducts([]);
         }
-      }
+    }
+
+    async function loadCategories() {
+
+        let categories = await getCategoriesList();
+
+        if (categories.length > 0) {
+            setCategories(categories);
+        } else {
+            Alert.alert("Não há categorias de produtos cadastrados!");
+            setCategories([]);
+        }
+    }
+
+    async function editProduct(product_id) {
+        navigation.navigate('AddEditProduct', {user: user, product_id: product_id});
+    }
+
+    async function eraseProduct(product_id) {
+        Alert.alert('Apagar produto', 'Deseja realmente apagar o produto?', [
+            {
+                text: 'Não',
+                onPress: () => null,
+                style: 'cancel',
+            },
+            {
+                text: 'Sim', onPress: async () => {
+                    let eraseResult = await removeProduct(product_id);
+
+                    if (eraseResult) {
+                        Alert.alert("Produto apagado com sucesso!");
+                        filterProducts(filteredCategory);
+                    }
+                    else
+                        Alert.alert("Houve algum problema para apagar o produto!");
+                }
+            },
+        ]);
+    }
+
 
 
     return (
         <View style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#1B0036" />
             <Text style={styles.navigationBarText}>Lista de produtos</Text>
+            <Text style={styles.label}>Filtrar por categoria: </Text>
+            <Picker
+                selectedValue={filteredCategory}
+                onValueChange={(itemValue) => filterProducts(itemValue)}
+                style={styles.picker}>
+                <Picker.Item label="Todas" value="0" />
+                {
+                    categories.map((category, index) => (
+                        <Picker.Item label={category.name} value={category.id} />
+                    ))}
+            </Picker>
             <View style={styles.scrollViewView}>
 
                 {
@@ -64,8 +131,8 @@ export default function Home({ navigation }) {
                             products.map((product, index) => (
                                 <CardProduct product={product}
                                     user={user}
-                                    edit={inDevelopment}
-                                    remove={inDevelopment}
+                                    edit={editProduct}
+                                    remove={eraseProduct}
                                     addToCart={inDevelopment}
                                     key={index.toString()} />
                             ))}
@@ -73,6 +140,12 @@ export default function Home({ navigation }) {
                 }
 
             </View>
+            {
+                salesman &&
+                <TouchableOpacity style={styles.themedAddItemButton} onPress={() => editProduct(0)}>
+                    <Text style={styles.themedButtonText}>ADICIONAR ITEM</Text>
+                </TouchableOpacity>
+            }
             {salesman &&
                 <>
                     {/* <TouchableOpacity style={styles.themedButton}>

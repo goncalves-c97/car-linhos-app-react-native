@@ -27,11 +27,22 @@ const styles = StyleSheet.create({
     borderWidth: 8,
     borderRadius: 50,
     borderColor: '#1B0036',
-    marginVertical: 20
+    marginVertical: 10
+  },
+  themedAddItemButton:{
+    width: '80%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#04C963',
+    padding: 0,
+    borderWidth: 8,
+    borderRadius: 50,
+    borderColor: '#1B0036',
+    marginTop: 10
   },
   themedButtonText:{
     color: '#FAFAF9',
-    fontSize: 35,
+    fontSize: 30,
     fontWeight: 'bold',
     textAlign: 'center'
   },
@@ -47,11 +58,22 @@ const styles = StyleSheet.create({
   },
   scrollViewView: {
     flex: 1,
-    width: '90%'
+    width: '90%',
+    marginTop: 10
   },
   scrollView: {
-    height: '100%',
-    marginTop: 20
+    height: '100%'
+  },
+  picker: {
+    backgroundColor: 'white',
+    width: '90%',
+    backgroundColor: 'white',
+    fontSize: 15,
+    paddingHorizontal: 10,
+    color: 'black'
+  },
+  label:{
+    marginVertical: 10
   }
 })
 

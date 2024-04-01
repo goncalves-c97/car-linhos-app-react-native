@@ -106,7 +106,19 @@ export async function createProductsTable() {
     return await executeSqlQuery(queryTbProducts);
 }
 
-export async function createOrdersTable() {
+/*export async function createPedidosTable() {
+    // Criação da tabela de produtos
+    const queryTbProductsInCart = `CREATE TABLE IF NOT EXISTS tbpedidos
+        (
+            id integer not null primary key autoincrement,            
+            total_price real not null,
+            category_id integer not null
+        )`;
+
+    return await executeSqlQuery(queryTbProductsInCart);
+}*/
+
+/*export async function createOrdersTable() {
     // Criação de vendas
     const queryTbOrders = `CREATE TABLE IF NOT EXISTS tborders
         (
@@ -116,16 +128,16 @@ export async function createOrdersTable() {
         )`;
 
     return await executeSqlQuery(queryTbOrders);
-}
+}*/
 
 export async function createOrderItemsTable() {
     // Criação dos itens de venda
     const queryTbOrderItems = `CREATE TABLE IF NOT EXISTS tborderitems
         (
             id integer not null primary key autoincrement,
-            order_id integer not null,
-            product_id integer not null,
-            unit_price real not null
+            user_id integer not null,
+            product_ids text not null,            
+            total_price real not null
         )`;
 
     return await executeSqlQuery(queryTbOrderItems);
@@ -133,21 +145,21 @@ export async function createOrderItemsTable() {
 
 export async function createTables() {
 
-    // await dropTable('tborderitems');
+    //await dropTable('tborderitems');
 
     let tbUserOk = await createUsersTable();
     let tbCategoriesOk = await createCategoriesTable();
     let tbProductsOk = await createProductsTable();
-    let tbOrdersOk = await createOrdersTable();
+    //let tbOrdersOk = await createOrdersTable();
     let tbOrderItemsOk = await createOrderItemsTable();
 
     console.log('tbUserOk: ', tbUserOk);
     console.log('tbCategoriesOk: ', tbCategoriesOk);
     console.log('tbProductsOk: ', tbProductsOk);
-    console.log('tbOrdersOk: ', tbOrdersOk);
+    //console.log('tbOrdersOk: ', tbOrdersOk);
     console.log('tbOrderItemsOk: ', tbOrderItemsOk);
 
-    return tbOrdersOk && tbCategoriesOk && tbProductsOk && tbOrdersOk && tbOrderItemsOk;
+    return tbCategoriesOk && tbProductsOk && /*tbOrdersOk &&*/ tbOrderItemsOk;
 };
 
 export async function checkCategoriesMock() {
@@ -306,6 +318,50 @@ export async function getCategoriesList() {
     return categoriesList;
 }
 
+export async function addOrder(productsInCart, user, total_price) {
+    let product_ids = "";    
+    let query = 'insert into tborderitems (user_id, product_ids, total_price) values (?, ?, ?)';
+    for(var i = 0; i < productsInCart.length; i++){
+        if(i == productsInCart.length - 1){
+            product_ids += productsInCart[i]["id"];
+        }
+        else{
+            product_ids += productsInCart[i]["id"] + ", ";
+        }
+    }
+    
+    let params = [ user.id, product_ids,  total_price];
+
+    console.log(params);
+
+    if(total_price > 0){
+        return await executeSqlQueryWithParams(query, params);
+    }
+}
+
+export async function getOrdersList(userID) {
+    let params = userID;
+    let query = 'select * from tborderitems where user_id = ' + params;    
+    let registers = await executeSelectSqlQuery(query, params);
+    console.log("params ",params)
+
+    var ordersList = []
+
+    if (registers.rows != undefined && registers.rows.length >= 1) {
+        
+        for (let n = 0; n < registers.rows.length; n++) {
+            let obj = {
+                userid: registers.rows.item(n).user_id,                
+                productids: registers.rows.item(n).product_ids,
+                totalprice: registers.rows.item(n).total_price
+            }
+            ordersList.push(obj);
+        }
+    }
+    
+    return ordersList;//ordersList.sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export async function addProduct(product) {
     let query = 'insert into tbproducts (name, stock, unit_price, category_id) values (?, ?, ?, ?)';
     let params = [ product.name, product.stock, product.unit_price, product.category_id ];
@@ -328,7 +384,7 @@ export async function removeProduct(product_id) {
     let query = 'delete from tbproducts where id=?';
     let params = [ product_id ];
 
-    console.log(params);
+    console.log("params ", params);
 
     return await executeSqlQueryWithParams(query, params);
 }

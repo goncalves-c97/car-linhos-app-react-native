@@ -1,11 +1,11 @@
-import { react, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, BackHandler, Alert } from 'react-native';
-import { useRoute } from '@react-navigation/native'
 import styles from './styles';
 
 export default function Home({ navigation }) {
-
-    // Esse useEffect é utilizado para sobrescrever o comportamento no botão nativo de voltar do Android
+    const user = navigation.getParam('user', null); // Get user from navigation parameters    
+    const salesman = user && user.role === 'Vendedor';
+    
     useEffect(() => {
         const backAction = () => {
             Alert.alert('Deslogar', 'Deseja realmente deslogar?', [
@@ -38,42 +38,45 @@ export default function Home({ navigation }) {
         ]);
     }
 
-    function productsView(){
-        navigation.navigate('Products', { user: user });
+    function productsView() {        
+        navigation.navigate('Products', { user });
     }
 
-    const user = navigation.getParam('user', null);
-    const salesman = user.role == 'Vendedor';
+    function ordersView() {
+        navigation.navigate('Orders', { user });
+    }
 
     return (
         <View style={styles.container}>
-            <Text style={styles.greetMessage}>Bem-vindo(a), {user.name}!</Text>
-            {salesman &&
+            
+            <Text style={styles.greetMessage}>Bem-vindo(a), {user ? user.name : 'Usuário'}!</Text>
+            {salesman && (
                 <>
                     <TouchableOpacity style={styles.themedButton}>
                         <Text style={styles.themedButtonText}>VENDAS</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.themedButton} onPress={ () => productsView() }>
+                    <TouchableOpacity style={styles.themedButton} onPress={productsView}>
                         <Text style={styles.themedButtonText}>PRODUTOS</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.themedButton}>
                         <Text style={styles.themedButtonText}>CLIENTES</Text>
                     </TouchableOpacity>
-                </>}
+                </>
+            )}
 
-            {!salesman &&
+            {!salesman && (
                 <>
-                    <TouchableOpacity style={styles.themedButton}>
+                    <TouchableOpacity style={styles.themedButton} onPress={ordersView}>
                         <Text style={styles.themedButtonText}>MINHAS COMPRAS</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.themedButton} onPress={ () => productsView() }>
+                    <TouchableOpacity style={styles.themedButton} onPress={productsView}>
                         <Text style={styles.themedButtonText}>NOVA COMPRA</Text>
                     </TouchableOpacity>
-                </>}
-            <TouchableOpacity style={styles.themedQuitButton} onPress={() => logOff()}>
+                </>
+            )}
+            <TouchableOpacity style={styles.themedQuitButton} onPress={logOff}>
                 <Text style={styles.themedButtonText}>SAIR</Text>
             </TouchableOpacity>
         </View>
     );
-
 }

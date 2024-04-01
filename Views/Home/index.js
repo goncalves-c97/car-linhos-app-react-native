@@ -18,7 +18,7 @@ export default function Home({ navigation }) {
             tablesCreated = await createTables();
             console.log("Tabelas OK: ", tablesCreated);
 
-            let mockEnabled = false;
+            let mockEnabled = true;
 
             if (mockEnabled) {
                 console.log("Verificando mocks...");

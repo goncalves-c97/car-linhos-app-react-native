@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView
 import { Picker } from '@react-native-picker/picker';
 import styles from './styles';
 
-import {
+import {    
     getCategoriesList,
     getProductsList,
     removeProduct
@@ -14,11 +14,10 @@ import CardProduct from '../../Components/CardProduct';
 import Cart from '../../assets/shopping_cart.png';
 
 export default function Home({ navigation }) {
-
+    var cartProducts = navigation.getParam('productsInCart', null);
     const user = navigation.getParam('user', null);
     const salesman = user.role == 'Vendedor';
-    const [productsInCart, setProductsInCart] = useState([]);
-
+    const [productsInCart, setProductsInCart] = useState([])
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filteredCategory, setFilteredCategory] = useState('0');
@@ -28,7 +27,7 @@ export default function Home({ navigation }) {
     useEffect(() => {
 
         loadProducts();
-        loadCategories();
+        loadCategories();        
         const backAction = () => {
             navigation.navigate('MainMenu', { user: user });
         };
@@ -85,7 +84,7 @@ export default function Home({ navigation }) {
     }
 
     async function editProduct(product_id) {
-        navigation.navigate('AddEditProduct', { user: user, product_id: product_id });
+        navigation.navigate('AddEditProduct', { user: user, product_id: product_id, productsInCart: productsInCart });
     }
 
     async function eraseProduct(product_id) {
@@ -111,88 +110,175 @@ export default function Home({ navigation }) {
     }
 
     async function addToCart(product_id){
-        console.log(product_id);
-        let productSelected = products.filter(x => x.id == product_id);
-        console.log(productSelected);
+        let productSelected = products.find(x => x.id == product_id);           
+        
         setProductsInCart([...productsInCart, productSelected]);
     }
 
-    useEffect(() => {
-        setCartQuantity(productsInCart.length);
-        console.log("Carrinho: ", productsInCart);
+    useEffect(() => {        
+        //if (productsInCart != null) {
+            setCartQuantity(productsInCart.length);
+        //}
     }, [productsInCart]);
+    
 
-    return (
-        <View style={styles.container}>
-            <StatusBar barStyle="light-content" backgroundColor="#1B0036" />
-            <View style={styles.horizontalView}>
-                <Text style={styles.navigationBarText}>Lista de produtos</Text>
-                <TouchableOpacity>
-                    <Image style={styles.icon} source={Cart}></Image>
-                </TouchableOpacity>
-                <Text style={styles.cartQuantity}>{cartQuantity}</Text>
-            </View>
-            <Text style={styles.label}>Filtrar por categoria: </Text>
-            <Picker
-                selectedValue={filteredCategory}
-                onValueChange={(itemValue) => filterProducts(itemValue)}
-                style={styles.picker}>
-                <Picker.Item label="Todas" value="0" />
-                {
-                    categories.map((category, index) => (
-                        <Picker.Item label={category.name} value={category.id} />
-                    ))}
-            </Picker>
-            <View style={styles.scrollViewView}>
-
-                {
-                    products.length > 0 &&
-                    <ScrollView style={styles.scrollView}>
-                        {
-                            products.map((product, index) => (
-                                <CardProduct product={product}
-                                    user={user}
-                                    edit={editProduct}
-                                    remove={eraseProduct}
-                                    addToCart={addToCart}
-                                    key={index.toString()} />
-                            ))}
-                    </ScrollView>
-                }
-
-            </View>
-            {
-                salesman &&
-                <TouchableOpacity style={styles.themedAddItemButton} onPress={() => editProduct(0)}>
-                    <Text style={styles.themedButtonText}>ADICIONAR ITEM</Text>
-                </TouchableOpacity>
+    useEffect(() =>{        
+        if(cartProducts != [] && cartProducts != null){
+            if(productsInCart.length == 0){
+                setProductsInCart(cartProducts)    
             }
-            {salesman &&
-                <>
-                    {/* <TouchableOpacity style={styles.themedButton}>
-                        <Text style={styles.themedButtonText}>VENDAS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.themedButton}>
-                        <Text style={styles.themedButtonText}>PRODUTOS</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.themedButton}>
-                        <Text style={styles.themedButtonText}>CLIENTES</Text>
-                    </TouchableOpacity> */}
-                </>}
+        }
+    })
 
-            {!salesman &&
-                <>
-                    {/* <TouchableOpacity style={styles.themedButton}>
-                        <Text style={styles.themedButtonText}>MINHAS COMPRAS</Text>
+    function productsInCartView(){
+        navigation.navigate('ProductViewClient', {productsInCart: productsInCart, user: user});
+    }
+    
+    if(!salesman)  {
+        return (
+        
+            <View style={styles.container}>
+                <StatusBar barStyle="light-content" backgroundColor="#1B0036" />
+                <View style={styles.horizontalView}>
+                    <Text style={styles.navigationBarText}>Lista de Produtos</Text>                
+                    <TouchableOpacity onPress={() => productsInCartView()}>
+                        <Image style={styles.icon} source={Cart}></Image>                         
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.themedButton}>
-                        <Text style={styles.themedButtonText}>NOVA COMPRA</Text>
-                    </TouchableOpacity> */}
-                </>}
-            <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
-                <Text style={styles.themedButtonText}>VOLTAR</Text>
-            </TouchableOpacity>
-        </View>
-    );
-
+                    <Text style={styles.cartQuantity}>{cartQuantity}</Text>                    
+                </View>
+                <Text style={styles.label}>Filtrar por categoria: </Text>
+                <Picker
+                    selectedValue={filteredCategory}
+                    onValueChange={(itemValue) => filterProducts(itemValue)}
+                    style={styles.picker}>
+                    <Picker.Item label="Todas" value="0" />
+                    {
+                        categories.map((category, index) => (
+                            <Picker.Item label={category.name} value={category.id} />
+                        ))}
+                </Picker>
+                <View style={styles.scrollViewView}>
+    
+                    {
+                        products.length > 0 &&
+                        <ScrollView style={styles.scrollView}>
+                            {
+                                products.map((product, index) => (
+                                    <CardProduct product={product}
+                                        user={user}
+                                        edit={editProduct}
+                                        remove={eraseProduct}
+                                        addToCart={addToCart}
+                                        key={index.toString()} />
+                                ))}
+                        </ScrollView>
+                    }
+    
+                </View>
+                {
+                    salesman &&
+                    <TouchableOpacity style={styles.themedAddItemButton} onPress={() => editProduct(0)}>
+                        <Text style={styles.themedButtonText}>ADICIONAR ITEM</Text>
+                    </TouchableOpacity>
+                }
+                {salesman &&
+                    <>
+                        {/* <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>VENDAS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>PRODUTOS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>CLIENTES</Text>
+                        </TouchableOpacity> */}
+                    </>}
+    
+                {!salesman &&
+                    <>
+                        {/* <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>MINHAS COMPRAS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>NOVA COMPRA</Text>
+                        </TouchableOpacity> */}
+                    </>}
+                <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
+                    <Text style={styles.themedButtonText}>VOLTAR</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+    else{
+        return (
+        
+            <View style={styles.container}>
+                <StatusBar barStyle="light-content" backgroundColor="#1B0036" />
+                <View style={styles.horizontalView}>
+                    <Text style={styles.navigationBarText}>Listas</Text>
+                    <Text style={styles.cartQuantity}>{cartQuantity}</Text>
+                </View>
+                <Text style={styles.label}>Filtrar por categoria: </Text>
+                <Picker
+                    selectedValue={filteredCategory}
+                    onValueChange={(itemValue) => filterProducts(itemValue)}
+                    style={styles.picker}>
+                    <Picker.Item label="Todas" value="0" />
+                    {
+                        categories.map((category, index) => (
+                            <Picker.Item label={category.name} value={category.id} />
+                        ))}
+                </Picker>
+                <View style={styles.scrollViewView}>
+    
+                    {
+                        products.length > 0 &&
+                        <ScrollView style={styles.scrollView}>
+                            {
+                                products.map((product, index) => (
+                                    <CardProduct product={product}
+                                        user={user}
+                                        edit={editProduct}
+                                        remove={eraseProduct}
+                                        addToCart={addToCart}
+                                        key={index.toString()} />
+                                ))}
+                        </ScrollView>
+                    }
+    
+                </View>
+                {
+                    salesman &&
+                    <TouchableOpacity style={styles.themedAddItemButton} onPress={() => editProduct(0)}>
+                        <Text style={styles.themedButtonText}>ADICIONAR ITEM</Text>
+                    </TouchableOpacity>
+                }
+                {salesman &&
+                    <>
+                        {/* <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>VENDAS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>PRODUTOS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>CLIENTES</Text>
+                        </TouchableOpacity> */}
+                    </>}
+    
+                {!salesman &&
+                    <>
+                        {/* <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>MINHAS COMPRAS</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.themedButton}>
+                            <Text style={styles.themedButtonText}>NOVA COMPRA</Text>
+                        </TouchableOpacity> */}
+                    </>}
+                <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
+                    <Text style={styles.themedButtonText}>VOLTAR</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 }

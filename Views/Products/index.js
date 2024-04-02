@@ -215,7 +215,7 @@ export default function Home({ navigation }) {
             <View style={styles.container}>
                 <StatusBar barStyle="light-content" backgroundColor="#1B0036" />
                 <View style={styles.horizontalView}>
-                    <Text style={styles.navigationBarText}>Listas</Text>
+                    <Text style={styles.navigationBarText}>Lista de Produtos</Text>
                     <Text style={styles.cartQuantity}>{cartQuantity}</Text>
                 </View>
                 <Text style={styles.label}>Filtrar por categoria: </Text>

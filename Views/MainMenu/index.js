@@ -45,22 +45,22 @@ export default function Home({ navigation }) {
     function ordersView() {
         navigation.navigate('Orders', { user });
     }
-
+    
     return (
         <View style={styles.container}>
             
             <Text style={styles.greetMessage}>Bem-vindo(a), {user ? user.name : 'Usuário'}!</Text>
             {salesman && (
                 <>
-                    <TouchableOpacity style={styles.themedButton}>
+                    <TouchableOpacity style={styles.themedButton}  onPress={ordersView}>
                         <Text style={styles.themedButtonText}>VENDAS</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.themedButton} onPress={productsView}>
                         <Text style={styles.themedButtonText}>PRODUTOS</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.themedButton}>
+                    {/*<TouchableOpacity style={styles.themedButton}>
                         <Text style={styles.themedButtonText}>CLIENTES</Text>
-                    </TouchableOpacity>
+            </TouchableOpacity>*/}
                 </>
             )}
 

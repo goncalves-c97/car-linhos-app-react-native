@@ -362,6 +362,29 @@ export async function getOrdersList(userName) {
     return ordersList;//ordersList.sort((a, b) => a.name.localeCompare(b.name));
 }
 
+export async function getOrdersListSalesman(userName) {
+    let params = userName;
+    let query = 'select * from tborderitems';
+    let registers = await executeSelectSqlQuery(query, params);
+    console.log("params2 ",params)
+
+    var ordersList = []
+
+    if (registers.rows != undefined && registers.rows.length >= 1) {
+        
+        for (let n = 0; n < registers.rows.length; n++) {
+            let obj = {
+                username: registers.rows.item(n).user_name,                
+                productnames: registers.rows.item(n).product_names,
+                totalprice: registers.rows.item(n).total_price
+            }
+            ordersList.push(obj);
+        }
+    }
+    
+    return ordersList;//ordersList.sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export async function addProduct(product) {
     let query = 'insert into tbproducts (name, stock, unit_price, category_id) values (?, ?, ?, ?)';
     let params = [ product.name, product.stock, product.unit_price, product.category_id ];

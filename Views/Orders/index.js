@@ -3,7 +3,8 @@ import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView
 import styles from './styles';
 
 import{
-    getOrdersList
+    getOrdersList,
+    getOrdersListSalesman
 } from '../../services/dbservice'
 
 import CardOrder from '../../Components/CardOrder';
@@ -12,7 +13,7 @@ export default function Home({ navigation }) {
     
     const user = navigation.getParam('user', null);
     const salesman = user.role == 'Vendedor';    
-    const [orders, setOrders] = useState([]);    
+    const [orders, setOrders] = useState([]);
 
     // Esse useEffect é utilizado para sobrescrever o comportamento no botão nativo de voltar do Android
     useEffect(() => {
@@ -37,8 +38,14 @@ export default function Home({ navigation }) {
     }
     
     async function loadOrders() {
-
-        let orders = await getOrdersList(user.name);
+        let orders;
+        if(!salesman){
+            orders = await getOrdersList(user.name);
+        }
+        else{
+            orders = await getOrdersListSalesman(user.name);
+        }
+        
         console.log("orders ", orders)
         if (orders.length > 0) {
             setOrders(orders);
@@ -48,7 +55,7 @@ export default function Home({ navigation }) {
         }
     }
     
-    if(!salesman)  {
+    //if(!salesman)  {
         return (
         
             <View style={styles.container}>                               
@@ -72,5 +79,5 @@ export default function Home({ navigation }) {
                 </TouchableOpacity>
             </View>
         );
-    }    
+    //}    
 }

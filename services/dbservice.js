@@ -135,9 +135,9 @@ export async function createOrderItemsTable() {
     const queryTbOrderItems = `CREATE TABLE IF NOT EXISTS tborderitems
         (
             id integer not null primary key autoincrement,
-            user_id integer not null,
-            product_ids text not null,            
-            total_price real not null
+            user_name text not null,
+            total_price real not null,
+            product_names text not null            
         )`;
 
     return await executeSqlQuery(queryTbOrderItems);
@@ -319,18 +319,18 @@ export async function getCategoriesList() {
 }
 
 export async function addOrder(productsInCart, user, total_price) {
-    let product_ids = "";    
-    let query = 'insert into tborderitems (user_id, product_ids, total_price) values (?, ?, ?)';
+    let product_names = "";    
+    let query = 'insert into tborderitems (user_name, total_price, product_names) values (?, ?, ?)';
     for(var i = 0; i < productsInCart.length; i++){
         if(i == productsInCart.length - 1){
-            product_ids += productsInCart[i]["id"];
+            product_names += productsInCart[i]["name"] + ".";
         }
         else{
-            product_ids += productsInCart[i]["id"] + ", ";
+            product_names += productsInCart[i]["name"] + ", ";
         }
     }
     
-    let params = [ user.id, product_ids,  total_price];
+    let params = [ user.name,  total_price, product_names];
 
     console.log(params);
 
@@ -339,9 +339,9 @@ export async function addOrder(productsInCart, user, total_price) {
     }
 }
 
-export async function getOrdersList(userID) {
-    let params = userID;
-    let query = 'select * from tborderitems where user_id = ' + params;    
+export async function getOrdersList(userName) {
+    let params = userName;
+    let query = 'select * from tborderitems where user_name = ' + "'" + params + "'";
     let registers = await executeSelectSqlQuery(query, params);
     console.log("params ",params)
 
@@ -351,8 +351,8 @@ export async function getOrdersList(userID) {
         
         for (let n = 0; n < registers.rows.length; n++) {
             let obj = {
-                userid: registers.rows.item(n).user_id,                
-                productids: registers.rows.item(n).product_ids,
+                username: registers.rows.item(n).user_name,                
+                productnames: registers.rows.item(n).product_names,
                 totalprice: registers.rows.item(n).total_price
             }
             ordersList.push(obj);

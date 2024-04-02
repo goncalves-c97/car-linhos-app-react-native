@@ -13,13 +13,14 @@ export default function CardOrder({order}) {
     return (
         <View style={styles.cardHorizontalArea}>
             <View
-                style={[styles.cardUser, styles.shadow]} >
-                
-                <Text>ID dos produtos: {order.productids}</Text>
+                style={[styles.cardUser, styles.shadow]} >                 
+  
+                <Text>Nome do comprador: {order.username}</Text>
 
-                <Text>ID do usuário: {order.userid}</Text>
+                <Text>Produtos comprados:</Text>
+                <ScrollView><Text>{order.productnames}</Text></ScrollView>
 
-                <Text>Preço total: R$ {order.totalprice}</Text>
+                <Text>Preço total da compra: R${order.totalprice}</Text>
             
             </View>
  

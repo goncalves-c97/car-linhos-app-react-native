@@ -38,7 +38,7 @@ export default function Home({ navigation }) {
     
     async function loadOrders() {
 
-        let orders = await getOrdersList(user.id);
+        let orders = await getOrdersList(user.name);
         console.log("orders ", orders)
         if (orders.length > 0) {
             setOrders(orders);

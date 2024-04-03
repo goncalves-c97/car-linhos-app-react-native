@@ -8,14 +8,14 @@ import {
     addOrder,
 } from '../../services/dbservice'
 
-export default function Home({ navigation }) {    
+export default function Home({ navigation }) {
     const user = navigation.getParam('user', null);
-    const productsInCart = navigation.getParam('productsInCart', null);    
+    const productsInCart = navigation.getParam('productsInCart', null);
     // Esse useEffect é utilizado para sobrescrever o comportamento no botão nativo de voltar do Android
-    useEffect(() => {        
+    useEffect(() => {
     }, [navigation]);
 
-    function goBack() {        
+    function goBack() {
         navigation.navigate('Products', { user: user, productsInCart: productsInCart });
     }
 
@@ -36,12 +36,12 @@ export default function Home({ navigation }) {
                 style: 'cancel',
             },
             {
-                text: 'Sim', onPress: async () => {                    
+                text: 'Sim', onPress: async () => {
                     let productIndexToDelete = getProductIndexById(productsInCart, product_id);
-                    
+
                     if (productIndexToDelete !== -1) {
                         productsInCart.splice(productIndexToDelete, 1);
-                        navigation.navigate('ProductViewClient', {productsInCart: productsInCart, user: user});
+                        navigation.navigate('ProductViewClient', { productsInCart: productsInCart, user: user });
                         Alert.alert("Produto removido com sucesso!");
                     } else {
                         Alert.alert("Product não encontrado.");
@@ -51,43 +51,66 @@ export default function Home({ navigation }) {
         ]);
     }
 
-    function finalizarCompra(){
-        addOrder(productsInCart, user, calcTotal())
-        productsInCart.splice(0, productsInCart.length);
+    async function finalizarCompra() {
+        let result = await addOrder(productsInCart, user, calcTotal());
+
+        if (result) {
+            // Alert.alert('Parabéns pela compra fictícia!');
+            // Alert.alert('Seu produto nunca irá chegar =)');
+
+            Alert.alert(
+                "Parabéns pela compra fictícia!",
+                "Seu produto nunca irá chegar =)",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => {
+
+                    }
+                  }
+                ],
+                { cancelable: false }
+              );
+
+            productsInCart.splice(0, productsInCart.length);
+        }
+        else
+            Alert.alert('Houve algum problema para registrar a compra!');
+
         navigation.navigate('Products', { user });
     }
 
-    function calcTotal(){
-        var total = 0;        
-        for(var i = 0; i < productsInCart.length; i++){
-            total += productsInCart[i]["unit_price"];            
-        }        
+    function calcTotal() {
+        var total = 0;
+        for (var i = 0; i < productsInCart.length; i++) {
+            total += productsInCart[i]["unit_price"];
+        }
         return total;
     }
 
     return (
         <View style={styles.container}>
             <ScrollView style={styles.scrollViewView}>
-            {                   
-                productsInCart != null &&
-                <View style={styles.scrollView}>                    
                 {
-                    productsInCart.map((product, index) => (
-                        <CardProductInCart 
-                            product={product}
-                            remove={eraseProductFromCart}
-                            key={index.toString()} 
-                        />
-                    ))
-                }
+                    productsInCart != null &&
+                    <View style={styles.scrollView}>
+                        {
+                            productsInCart.map((product, index) => (
+                                <CardProductInCart
+                                    product={product}
+                                    remove={eraseProductFromCart}
+                                    key={index.toString()}
+                                />
+                            ))
+                        }
 
-                </View>
-            }                
+                    </View>
+                }
             </ScrollView>
             <View style={styles.totalView}>
-                <Text style={styles.total}>Total: R$ {calcTotal()}</Text>                
+                <Text style={styles.total}>Total: R$ {calcTotal()}</Text>
             </View>
-            
+
             <TouchableOpacity style={styles.themedButton} onPress={() => finalizarCompra(productsInCart)}>
                 <Text style={styles.themedButtonText}>Finalizar</Text>
             </TouchableOpacity>

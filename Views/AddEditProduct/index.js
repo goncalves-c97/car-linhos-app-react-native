@@ -243,6 +243,10 @@ export default function Home({ navigation }) {
             Alert.alert("Houve algum problema para salvar o produto. Tente novamente.");
     }
 
+    function noFunction(){
+        // Método para desabilitar os botões do cartão de produto
+    }
+
     return (
         <View style={styles.container}>
             <View>

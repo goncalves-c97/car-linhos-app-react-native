@@ -5,14 +5,19 @@ import carLinhosLogo from '../../assets/car-linhos-logo.png';
 
 import {
     createTables,
-    checkMocks
+    checkMocks,
+    dropTable
 } from '../../services/dbservice';
 
 export default function Home({ navigation }) {
 
     let tablesCreated = false;
 
+    // dropTable('tborderitems');
+
     async function checkTablesAndMocks() {
+
+        
         if (!tablesCreated) {
             console.log("Verificando tabelas...");
             tablesCreated = await createTables();

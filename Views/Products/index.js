@@ -13,7 +13,7 @@ import CardProduct from '../../Components/CardProduct';
 
 import Cart from '../../assets/shopping_cart.png';
 
-export default function Home({ navigation }) {
+export default function Products({ navigation }) {
     var cartProducts = navigation.getParam('productsInCart', null);
     const user = navigation.getParam('user', null);
     const salesman = user.role == 'Vendedor';
@@ -148,7 +148,7 @@ export default function Home({ navigation }) {
                     <Picker.Item label="Todas" value="0" />
                     {
                         categories.map((category, index) => (
-                            <Picker.Item label={category.name} value={category.id} />
+                            <Picker.Item label={category.name} value={category.id} key={index.toString()} />
                         ))}
                 </Picker>
                 <View style={styles.scrollViewView}>
@@ -198,7 +198,7 @@ export default function Home({ navigation }) {
                     <Picker.Item label="Todas" value="0" />
                     {
                         categories.map((category, index) => (
-                            <Picker.Item label={category.name} value={category.id} />
+                            <Picker.Item label={category.name} value={category.id} key={index.toString()} />
                         ))}
                 </Picker>
                 <View style={styles.scrollViewView}>

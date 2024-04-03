@@ -286,7 +286,7 @@ export default function Home({ navigation }) {
                     <Picker.Item label="Selecione uma categoria..." value={0} />
                     {
                         categories.map((category, index) => (
-                            <Picker.Item label={category.name} value={category.id} />
+                            <Picker.Item label={category.name} value={category.id} key={index.toString()} />
                         ))}
                 </Picker>
             </View>

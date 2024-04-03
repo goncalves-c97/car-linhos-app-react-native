@@ -325,6 +325,7 @@ export async function getOrdersList(userName) {
         
         for (let n = 0; n < registers.rows.length; n++) {
             let obj = {
+                id: registers.rows.item(n).id,
                 username: registers.rows.item(n).user_name,                
                 productnames: registers.rows.item(n).product_names,
                 totalprice: registers.rows.item(n).total_price
@@ -348,6 +349,7 @@ export async function getOrdersListSalesman(userName) {
         
         for (let n = 0; n < registers.rows.length; n++) {
             let obj = {
+                id: registers.rows.item(n).id,
                 username: registers.rows.item(n).user_name,                
                 productnames: registers.rows.item(n).product_names,
                 totalprice: registers.rows.item(n).total_price

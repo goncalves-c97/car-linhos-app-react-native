@@ -1,10 +1,8 @@
-import {
-    TextInput,
+import {    
     Text,
     View,
     TouchableOpacity,
-    Image,
-    ScrollView,
+    Image,    
 } from "react-native";
 import styles from "./styles";
 

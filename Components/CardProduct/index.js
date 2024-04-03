@@ -1,10 +1,8 @@
-import {
-    TextInput,
+import {    
     Text,
     View,
     TouchableOpacity,
-    Image,
-    ScrollView,
+    Image,    
 } from "react-native";
 import styles from "./styles";
 
@@ -20,7 +18,6 @@ import Miscellanelous from "../../assets/miscellanelous.png"
 import Edit from "../../assets/edit.png";
 import Remove from "../../assets/remove.png";
 import AddCart from "../../assets/add_cart.png";
-import Cart from "../../assets/cart.png";
 
 export default function CardProduct({ user, product, edit, remove, addToCart }) {
     return (

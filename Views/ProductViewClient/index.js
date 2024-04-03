@@ -1,6 +1,5 @@
-import { react, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Text, View, TouchableOpacity, BackHandler, Alert, ScrollView } from 'react-native';
-import { useRoute } from '@react-navigation/native'
 import styles from './styles';
 
 import CardProductInCart from '../../Components/CardProductInCart';
@@ -53,7 +52,6 @@ export default function Home({ navigation }) {
     }
 
     function finalizarCompra(){
-        console.log("finalizarCompra ", productsInCart)
         addOrder(productsInCart, user, calcTotal())
         productsInCart.splice(0, productsInCart.length);
         navigation.navigate('Products', { user });

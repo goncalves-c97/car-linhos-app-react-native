@@ -1,4 +1,4 @@
-import { react, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, TextInput, BackHandler, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
@@ -27,8 +27,7 @@ export default function Home({ navigation }) {
     }, [navigation]);
 
     function checkUserInputs(){
-
-        console.log(selectedRole);
+        
         if (selectedRole != 'Vendedor' && selectedRole != 'Comprador'){
             Alert.alert('Função inválida!');
             return false;

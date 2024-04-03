@@ -1,4 +1,4 @@
-import { react, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView, Image } from 'react-native';
 import styles from './styles';
 
@@ -32,10 +32,6 @@ export default function Home({ navigation }) {
     function goBack() {
         navigation.navigate('MainMenu', { user: user });
     }
-
-    function inDevelopment() {
-        Alert.alert('Em desenvolvimento...');
-    }
     
     async function loadOrders() {
         let orders;
@@ -46,7 +42,6 @@ export default function Home({ navigation }) {
             orders = await getOrdersListSalesman(user.name);
         }
         
-        console.log("orders ", orders)
         if (orders.length > 0) {
             setOrders(orders);
         } else {
@@ -54,30 +49,28 @@ export default function Home({ navigation }) {
             setOrders([]);
         }
     }
-    
-    //if(!salesman)  {
-        return (
         
-            <View style={styles.container}>                               
-                <View style={styles.scrollViewView}>    
-                    {
-                        orders.length > 0 &&
-                        <ScrollView style={styles.scrollView}>
-                            {
-                                orders.map((order, index) => (
-                                    <CardOrder order={order}
-                                        user={user}
-                                        key={index.toString()} />
-                                ))}
-                        </ScrollView>
-                    }
+    return (
     
-                </View>
-                
-                <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
-                    <Text style={styles.themedButtonText}>VOLTAR</Text>
-                </TouchableOpacity>
+        <View style={styles.container}>                               
+            <View style={styles.scrollViewView}>    
+                {
+                    orders.length > 0 &&
+                    <ScrollView style={styles.scrollView}>
+                        {
+                            orders.map((order, index) => (
+                                <CardOrder order={order}
+                                    user={user}
+                                    key={index.toString()} />
+                            ))}
+                    </ScrollView>
+                }
+
             </View>
-        );
-    //}    
+            
+            <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
+                <Text style={styles.themedButtonText}>VOLTAR</Text>
+            </TouchableOpacity>
+        </View>
+    );    
 }

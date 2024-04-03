@@ -1,4 +1,4 @@
-import { react, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, BackHandler, View, Image, TouchableOpacity, Alert } from 'react-native';
 import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
@@ -38,9 +38,7 @@ export default function Home({ navigation }) {
             return;
         }
 
-        let user = await getUserByEmailAndPassword(email, password);
-
-        console.log(user);
+        let user = await getUserByEmailAndPassword(email, password);        
 
         if (user == undefined)
             Alert.alert('Email e/ou senha incorretos!');

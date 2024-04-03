@@ -1,29 +1,21 @@
-import {
-    TextInput,
-    Text,
-    View,
-    TouchableOpacity,
-    Image,
-    ScrollView,
-} from "react-native";
-import styles from "./styles";
+import React from 'react';
+import { Text, View, ScrollView } from 'react-native';
+import styles from './styles'; // Importing the styles object from the external file
 
-
-export default function CardOrder({order}) {
+export default function CardOrder({ order }) {
     return (
         <View style={styles.cardHorizontalArea}>
-            <View
-                style={[styles.cardUser, styles.shadow]} >                 
-  
-                <Text>Nome do comprador: {order.username}</Text>
+            <View style={[styles.cardUser, styles.shadow]}>
+                <Text style={styles.usernameLabel}>Nome do comprador: </Text>
+                <Text>{order.username}</Text>
+                <Text style={styles.label}>Produtos comprados:</Text>
+                <ScrollView>
+                    <Text style={styles.productNames}>{order.productnames}</Text>
+                </ScrollView>
 
-                <Text>Produtos comprados:</Text>
-                <ScrollView><Text>{order.productnames}</Text></ScrollView>
-
-                <Text>Preço total da compra: R${order.totalprice}</Text>
-            
+                <Text style={styles.totalPrice}>Preço total da compra:</Text> 
+                <Text>R$ {order.totalprice}</Text>
             </View>
- 
         </View>
     );
 }

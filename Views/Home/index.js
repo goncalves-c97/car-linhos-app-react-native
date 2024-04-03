@@ -1,4 +1,4 @@
-import { react, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Text, View, TouchableOpacity, Image, BackHandler, Alert } from 'react-native';
 import styles from './styles';
 import carLinhosLogo from '../../assets/car-linhos-logo.png';

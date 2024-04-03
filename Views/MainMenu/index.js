@@ -58,9 +58,6 @@ export default function Home({ navigation }) {
                     <TouchableOpacity style={styles.themedButton} onPress={productsView}>
                         <Text style={styles.themedButtonText}>PRODUTOS</Text>
                     </TouchableOpacity>
-                    {/*<TouchableOpacity style={styles.themedButton}>
-                        <Text style={styles.themedButtonText}>CLIENTES</Text>
-            </TouchableOpacity>*/}
                 </>
             )}
 

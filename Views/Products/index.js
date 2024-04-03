@@ -1,4 +1,4 @@
-import { react, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, ScrollView, Image } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import styles from './styles';
@@ -42,10 +42,6 @@ export default function Home({ navigation }) {
 
     function goBack() {
         navigation.navigate('MainMenu', { user: user });
-    }
-
-    function inDevelopment() {
-        Alert.alert('Em desenvolvimento...');
     }
 
     async function filterProducts(productCategory) {
@@ -116,9 +112,7 @@ export default function Home({ navigation }) {
     }
 
     useEffect(() => {        
-        //if (productsInCart != null) {
-            setCartQuantity(productsInCart.length);
-        //}
+        setCartQuantity(productsInCart.length);        
     }, [productsInCart]);
     
 
@@ -180,29 +174,7 @@ export default function Home({ navigation }) {
                     <TouchableOpacity style={styles.themedAddItemButton} onPress={() => editProduct(0)}>
                         <Text style={styles.themedButtonText}>ADICIONAR ITEM</Text>
                     </TouchableOpacity>
-                }
-                {salesman &&
-                    <>
-                        {/* <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>VENDAS</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>PRODUTOS</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>CLIENTES</Text>
-                        </TouchableOpacity> */}
-                    </>}
-    
-                {!salesman &&
-                    <>
-                        {/* <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>MINHAS COMPRAS</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>NOVA COMPRA</Text>
-                        </TouchableOpacity> */}
-                    </>}
+                }                
                 <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
                     <Text style={styles.themedButtonText}>VOLTAR</Text>
                 </TouchableOpacity>
@@ -252,29 +224,7 @@ export default function Home({ navigation }) {
                     <TouchableOpacity style={styles.themedAddItemButton} onPress={() => editProduct(0)}>
                         <Text style={styles.themedButtonText}>ADICIONAR ITEM</Text>
                     </TouchableOpacity>
-                }
-                {salesman &&
-                    <>
-                        {/* <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>VENDAS</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>PRODUTOS</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>CLIENTES</Text>
-                        </TouchableOpacity> */}
-                    </>}
-    
-                {!salesman &&
-                    <>
-                        {/* <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>MINHAS COMPRAS</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.themedButton}>
-                            <Text style={styles.themedButtonText}>NOVA COMPRA</Text>
-                        </TouchableOpacity> */}
-                    </>}
+                }                
                 <TouchableOpacity style={styles.themedQuitButton} onPress={() => goBack()}>
                     <Text style={styles.themedButtonText}>VOLTAR</Text>
                 </TouchableOpacity>

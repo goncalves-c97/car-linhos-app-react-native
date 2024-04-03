@@ -106,30 +106,6 @@ export async function createProductsTable() {
     return await executeSqlQuery(queryTbProducts);
 }
 
-/*export async function createPedidosTable() {
-    // Criação da tabela de produtos
-    const queryTbProductsInCart = `CREATE TABLE IF NOT EXISTS tbpedidos
-        (
-            id integer not null primary key autoincrement,            
-            total_price real not null,
-            category_id integer not null
-        )`;
-
-    return await executeSqlQuery(queryTbProductsInCart);
-}*/
-
-/*export async function createOrdersTable() {
-    // Criação de vendas
-    const queryTbOrders = `CREATE TABLE IF NOT EXISTS tborders
-        (
-            id integer not null primary key autoincrement,
-            user_id integer not null,
-            date_time real not null
-        )`;
-
-    return await executeSqlQuery(queryTbOrders);
-}*/
-
 export async function createOrderItemsTable() {
     // Criação dos itens de venda
     const queryTbOrderItems = `CREATE TABLE IF NOT EXISTS tborderitems
@@ -149,17 +125,15 @@ export async function createTables() {
 
     let tbUserOk = await createUsersTable();
     let tbCategoriesOk = await createCategoriesTable();
-    let tbProductsOk = await createProductsTable();
-    //let tbOrdersOk = await createOrdersTable();
+    let tbProductsOk = await createProductsTable();    
     let tbOrderItemsOk = await createOrderItemsTable();
 
     console.log('tbUserOk: ', tbUserOk);
     console.log('tbCategoriesOk: ', tbCategoriesOk);
     console.log('tbProductsOk: ', tbProductsOk);
-    //console.log('tbOrdersOk: ', tbOrdersOk);
     console.log('tbOrderItemsOk: ', tbOrderItemsOk);
 
-    return tbCategoriesOk && tbProductsOk && /*tbOrdersOk &&*/ tbOrderItemsOk;
+    return tbUserOk && tbCategoriesOk && tbProductsOk && tbOrderItemsOk;
 };
 
 export async function checkCategoriesMock() {
@@ -359,7 +333,7 @@ export async function getOrdersList(userName) {
         }
     }
     
-    return ordersList;//ordersList.sort((a, b) => a.name.localeCompare(b.name));
+    return ordersList;
 }
 
 export async function getOrdersListSalesman(userName) {
@@ -382,7 +356,7 @@ export async function getOrdersListSalesman(userName) {
         }
     }
     
-    return ordersList;//ordersList.sort((a, b) => a.name.localeCompare(b.name));
+    return ordersList;
 }
 
 export async function addProduct(product) {
@@ -434,97 +408,3 @@ export async function getProductsList() {
 
     return productsList.sort((a, b) => a.name.localeCompare(b.name));
 }
-
-// export function obtemTodosUsuarios() {
-
-//     return new Promise((resolve, reject) => {
-
-//         let dbCx = getDbConnection();
-//         dbCx.transaction(tx => {
-//             let query = 'select * from tbUsuarios';
-//             tx.executeSql(query, [],
-//                 (tx, registros) => {
-
-//                     var retorno = []
-
-//                     for (let n = 0; n < registros.rows.length; n++) {
-//                         let obj = {
-//                             codigo: registros.rows.item(n).codigo,
-//                             nome: registros.rows.item(n).nome,
-//                             email: registros.rows.item(n).email,
-//                             senha: registros.rows.item(n).senha
-//                         }
-//                         retorno.push(obj);
-//                     }
-//                     resolve(retorno);
-//                 })
-//         },
-//             error => {
-//                 console.log(error);
-//                 resolve([]);
-//             }
-//         )
-//     }
-//     );
-// }
-
-// export function alteraUsuario(usuario) {
-
-//     return new Promise((resolve, reject) => {
-//         let query = 'update tbUsuarios set nome=?, email=?, senha=? where codigo=?';
-//         let dbCx = getDbConnection();
-
-//         dbCx.transaction(tx => {
-//             tx.executeSql(query, [usuario.nome, usuario.email, usuario.senha, usuario.codigo],
-//                 (tx, resultado) => {
-//                     resolve(resultado.rowsAffected > 0);
-//                 })
-//         },
-//             error => {
-//                 console.log(error);
-//                 resolve(false);
-//             }
-//         )
-//     }
-//     );
-// }
-
-// export function excluiUsuario(codigo) {
-
-//     return new Promise((resolve, reject) => {
-//         let query = 'delete from tbUsuarios where codigo=?';
-//         let dbCx = getDbConnection();
-
-//         dbCx.transaction(tx => {
-//             tx.executeSql(query, [codigo],
-//                 (tx, resultado) => {
-//                     resolve(resultado.rowsAffected > 0);
-//                 })
-//         },
-//             error => {
-//                 console.log(error);
-//                 resolve(false);
-//             }
-//         )
-//     }
-//     );
-// }
-
-// export function excluiTodosUsuarios() {
-
-//     return new Promise((resolve, reject) => {
-//         let query = 'delete from tbUsuarios';
-//         let dbCx = getDbConnection();
-//         dbCx.transaction(tx => {
-//             tx.executeSql(query, [],
-//                 (tx, resultado) => resolve(resultado.rowsAffected > 0)
-//             );
-//         },
-//             error => {
-//                 console.log(error);
-//                 resolve(false);
-//             }
-//         );
-//     }
-//     );
-// }

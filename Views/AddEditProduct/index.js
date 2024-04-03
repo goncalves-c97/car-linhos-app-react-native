@@ -1,4 +1,4 @@
-import { react, useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Text, View, TouchableOpacity, BackHandler, Alert, StatusBar, TextInput, Image, ScrollView } from 'react-native';
 import Dialog from 'react-native-dialog';
 import { Picker } from '@react-native-picker/picker';
@@ -49,8 +49,7 @@ export default function Home({ navigation }) {
         setInputText('');
     };
 
-    const user = navigation.getParam('user', null);
-    const salesman = user.role == 'Vendedor';
+    const user = navigation.getParam('user', null);    
     const product_id = navigation.getParam('product_id', null);
 
     const [products, setProducts] = useState([]);
@@ -125,15 +124,7 @@ export default function Home({ navigation }) {
 
     function goBack() {
         navigation.navigate('Products', { user: user });
-    }
-
-    function inDevelopment() {
-        Alert.alert('Em desenvolvimento...');
-    }
-
-    function noFunction() {
-        // Utilizado para o Card de produto
-    }
+    }    
 
     async function loadProducts() {
 

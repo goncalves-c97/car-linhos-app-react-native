@@ -52,6 +52,8 @@ export default function Home({ navigation }) {
     }
 
     async function finalizarCompra() {
+        console.log('Finalizando a compra');
+        
         let result = await addOrder(productsInCart, user, calcTotal());
 
         if (result) {

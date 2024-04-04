@@ -113,9 +113,10 @@ export async function createOrderItemsTable() {
             id integer not null primary key autoincrement,
             user_name text not null,
             total_price real not null,
-            product_names text not null            
+            product_names text not null,
+            date_time text          
         )`;
-
+        
     return await executeSqlQuery(queryTbOrderItems);
 }
 
@@ -292,9 +293,25 @@ export async function getCategoriesList() {
     return categoriesList;
 }
 
+function formatDateTime(date) {
+    const twoDigits = (num) => num.toString().padStart(2, '0');
+  
+    const day = twoDigits(date.getDate());
+    const month = twoDigits(date.getMonth() + 1); // Note: months are 0-based
+    const year = date.getFullYear();
+    const hours = twoDigits(date.getHours());
+    const minutes = twoDigits(date.getMinutes());
+    const seconds = twoDigits(date.getSeconds());
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  }
+  
 export async function addOrder(productsInCart, user, total_price) {
+    
+    let dateTime = formatDateTime(new Date());
+
     let product_names = "";    
-    let query = 'insert into tborderitems (user_name, total_price, product_names) values (?, ?, ?)';
+    let query = 'insert into tborderitems (user_name, total_price, product_names, date_time) values (?, ?, ?, ?)';
     for(var i = 0; i < productsInCart.length; i++){
         if(i == productsInCart.length - 1){
             product_names += productsInCart[i]["name"] + ".";
@@ -304,7 +321,7 @@ export async function addOrder(productsInCart, user, total_price) {
         }
     }
     
-    let params = [ user.name,  total_price, product_names];
+    let params = [ user.name,  total_price, product_names, dateTime];
 
     console.log(params);
 
@@ -317,7 +334,6 @@ export async function getOrdersList(userName) {
     let params = userName;
     let query = 'select * from tborderitems where user_name = ' + "'" + params + "'";
     let registers = await executeSelectSqlQuery(query, params);
-    console.log("params ",params)
 
     var ordersList = []
 
@@ -328,7 +344,8 @@ export async function getOrdersList(userName) {
                 id: registers.rows.item(n).id,
                 username: registers.rows.item(n).user_name,                
                 productnames: registers.rows.item(n).product_names,
-                totalprice: registers.rows.item(n).total_price
+                totalprice: registers.rows.item(n).total_price,
+                date_time: registers.rows.item(n).date_time
             }
             ordersList.push(obj);
         }
@@ -341,7 +358,6 @@ export async function getOrdersListSalesman(userName) {
     let params = userName;
     let query = 'select * from tborderitems';
     let registers = await executeSelectSqlQuery(query, params);
-    console.log("params2 ",params)
 
     var ordersList = []
 
@@ -352,7 +368,8 @@ export async function getOrdersListSalesman(userName) {
                 id: registers.rows.item(n).id,
                 username: registers.rows.item(n).user_name,                
                 productnames: registers.rows.item(n).product_names,
-                totalprice: registers.rows.item(n).total_price
+                totalprice: registers.rows.item(n).total_price,
+                date_time: registers.rows.item(n).date_time
             }
             ordersList.push(obj);
         }

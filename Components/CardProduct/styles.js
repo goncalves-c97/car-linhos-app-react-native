@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     },
     cardHorizontalArea:{    
         flexDirection: 'row',
-        flex: 1
+        flex: 1,
+        paddingVertical: 5
     },
     shadow: {
         shadowOffset: {

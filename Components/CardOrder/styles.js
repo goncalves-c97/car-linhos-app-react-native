@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         width: '100%',
         marginVertical: 3,
-        borderColor:'black',
+        borderColor:'#1B0036',
         borderWidth:2.5
     },
     productImage:{
@@ -40,7 +40,8 @@ const styles = StyleSheet.create({
         marginVertical: 3
     },
     cardHorizontalArea:{
-        marginTop:30,
+        marginTop: 30,
+        marginBottom: 10,
         flexDirection: 'row',
         flex: 1,
     },
@@ -56,33 +57,31 @@ const styles = StyleSheet.create({
     usernameLabel: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginBottom: 5,
-        backgroundColor: '#000000',
+        backgroundColor: '#1B0036',
         width: '100%',
         color:'white'
     },
     username: {
-        fontSize: 16,        
-        marginBottom: 5,
+        fontSize: 16
     },
     label: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginTop: 10,
-        backgroundColor: '#000000',
+        backgroundColor: '#1B0036',
         width: '100%',
         color:'white'
-    },
-    productNames: {
-        fontSize: 14,       
     },
     totalPrice: {
         fontSize: 16,
         fontWeight: 'bold',
-        backgroundColor: '#000000',
+        backgroundColor: '#1B0036',
         width: '100%',
         color:'white'
     },
+    value: {
+        padding: 6,
+        fontSize: 18
+    }
 })
 
 export default styles;

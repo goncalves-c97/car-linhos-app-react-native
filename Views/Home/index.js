@@ -13,7 +13,7 @@ export default function Home({ navigation }) {
 
     let tablesCreated = false;
 
-    //dropTable('tborderitems');
+    // dropTable('tborderitems');
 
     async function checkTablesAndMocks() {
 

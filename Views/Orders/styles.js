@@ -58,11 +58,14 @@ const styles = StyleSheet.create({
   },
   scrollViewView: {
     flex: 1,
+    height: '90%',
     width: '90%',
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 10
   },
   scrollView: {
-    height: '100%'
+    height: '90%',
+    marginBottom: 10
   },
   picker: {
     backgroundColor: 'white',
